@@ -1,14 +1,18 @@
-$(document).ready(function() {
-    loadData();
+const CONTEXT_PATH = `${document.location.origin}/${CTX}`;
 
+$(document).ready(function() {
+    console.log(CONTEXT_PATH);
+
+    loadData(CONTEXT_PATH);
 });
 
-function loadData() {
+function loadData(path) {
     $.ajax({
-        url: 'http://localhost:8080/demoapi/todo',
+        url: `${path}/todo`,
         type: 'GET',
         success: function (res) {
             let ul_todoList = document.getElementById('todoList');
+            console.log(res);
             res.map(function (todo) {
                 let htmlString = `
                     <li>
@@ -17,7 +21,7 @@ function loadData() {
                         <span>${todo.text}</span>
                         :
                         <button>
-                            <a href="${document.location.origin}/${ctx}/detail/${todo.id}">View</a>
+                            <a href="${document.location.origin}/${CTX}/detail/${todo.id}">View</a>
                         </button>
                     </li>
                 `;

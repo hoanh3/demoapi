@@ -1,10 +1,12 @@
 package demoapi.mvc.controller.api;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import demoapi.mvc.model.Todo;
 import demoapi.mvc.model.TodoPreview;
@@ -18,9 +20,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = "/todo/*")
 public class TodoApi extends HttpServlet{
-	
+	private static String pattern = "yyyy-MM-dd'T'HH:mm"; 
 	private TodoService _todoService = new TodoServiceImpl();
-	private Gson _gson = new Gson();
+	private Gson _gson = new GsonBuilder().setDateFormat(pattern).create();
 	
 	private void sentAsJson(HttpServletResponse resp, Object object) throws IOException{
 		resp.setContentType("application/json");
@@ -55,5 +57,28 @@ public class TodoApi extends HttpServlet{
 		}
 		sentAsJson(resp, todo);
 		return;
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String pathInfo = req.getPathInfo();
+		
+		if(pathInfo == null || pathInfo.equals("/")) {
+			StringBuilder buffer = new StringBuilder();
+			BufferedReader reader = req.getReader();
+			String line;
+			while((line = reader.readLine()) != null) {
+				buffer.append(line);
+			}
+			String payload = buffer.toString();
+			System.out.println(payload);
+			Todo todo = _gson.fromJson(payload, Todo.class);
+			System.out.println(todo);
+			_todoService.insertTodo(todo);
+			
+		} else {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 	}
 }

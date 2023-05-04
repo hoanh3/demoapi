@@ -41,6 +41,11 @@ public class Todo {
 	public void setDeadline(Date deadline) {
 		this.deadline = deadline;
 	}
+
+	@Override
+	public String toString() {
+		return "Todo [id=" + id + ", text=" + text + ", deadline=" + deadline + "]";
+	}
 	
 	
 }

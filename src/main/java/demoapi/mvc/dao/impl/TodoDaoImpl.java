@@ -63,8 +63,22 @@ public class TodoDaoImpl implements TodoDao {
 
 	@Override
 	public void insertTodo(Todo todo) {
-		// TODO Auto-generated method stub
-		
+		String query = "INSERT INTO [dbo].[todo]\r\n"
+				+ "([text], [deadline])\r\n"
+				+ "VALUES\r\n"
+				+ "(?, ?)";
+		try {
+			_connection = MSSQLConnector.getConnection();
+			_prepateStatement = _connection.prepareStatement(query);
+			_prepateStatement.setString(1, todo.getText());
+			_prepateStatement.setDate(2, (Date) todo.getDeadline());
+			
+			int status = _prepateStatement.executeUpdate();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println("loi insertTodoDao");
+		}
+		return ;
 	}
 
 	@Override

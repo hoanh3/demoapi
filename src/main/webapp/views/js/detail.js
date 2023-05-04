@@ -1,11 +1,14 @@
+
 $(document).ready(function() {
-    console.log(document.getElementById('todoId').value);
-    loadData();
+    const CONTEXT_PATH = `${document.location.origin}/${CTX}`;
+    console.log(CONTEXT_PATH);
+
+    loadData(CONTEXT_PATH);
 });
 
-function loadData() {
+function loadData(path) {
     $.ajax({
-        url: `http://localhost:8080/demoapi/todo/${document.getElementById('todoId').value}`,
+        url: `${path}/todo/${document.getElementById('todoId').value}`,
         type: 'GET',
         success: function (todo) {
             let todoElement = document.getElementById('todo');

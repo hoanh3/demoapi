@@ -1,5 +1,6 @@
 package demoapi.mvc.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import demoapi.mvc.dao.TodoDao;
@@ -26,8 +27,10 @@ public class TodoServiceImpl implements TodoService{
 
 	@Override
 	public void insertTodo(Todo todo) {
-		// TODO Auto-generated method stub
-		
+		String pattern = "MM-dd-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		_todoDao.insertTodo(todo);
+		return;
 	}
 
 	@Override
